@@ -42,8 +42,8 @@ public partial class MainWindow : Window
 
     private void SaveButton_Click(object? sender, RoutedEventArgs e)
     {
-        var title = TitleTextBox.Text ?? string.Empty;
-        var content = ContentTextBox.Text ?? string.Empty;
+        var title = (TitleTextBox.Text ?? string.Empty).Trim();
+        var content = (ContentTextBox.Text ?? string.Empty).Trim();
 
         var timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
         var newEntry = $"{timestamp} — {title}\n\n{content}";
