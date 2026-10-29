@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 
@@ -28,7 +29,7 @@ public partial class MainWindow : Window
         if (File.Exists(FilePath))
         {
             var content = File.ReadAllText(FilePath, Encoding.UTF8);
-            var entries = content.Split(new[] { "\r\n\r\n", "\n\n" }, StringSplitOptions.RemoveEmptyEntries);
+            var entries = Regex.Split(content, @"(?:\r?\n\r?\n)+(?=## )");
             foreach (var entry in entries)
             {
                 var trimmed = entry.Trim();
@@ -46,7 +47,7 @@ public partial class MainWindow : Window
         var content = (ContentTextBox.Text ?? string.Empty).Trim();
 
         var timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
-        var newEntry = $"{timestamp} — {title}\n\n{content}";
+        var newEntry = $"## {timestamp} — {title}\n\n{content}";
 
         var existing = File.Exists(FilePath) ? File.ReadAllText(FilePath, Encoding.UTF8) : string.Empty;
         var updated = string.IsNullOrWhiteSpace(existing)
