@@ -54,11 +54,20 @@ public partial class MainWindow : Window
             ? newEntry
             : newEntry + "\n\n" + existing.Trim();
 
-        File.WriteAllText(FilePath, updated, Encoding.UTF8);
+        try
+        {
+            File.WriteAllText(FilePath, updated, Encoding.UTF8);
 
-        _notes.Insert(0, newEntry);
+            _notes.Insert(0, newEntry);
 
-        TitleTextBox.Text = string.Empty;
-        ContentTextBox.Text = string.Empty;
+            TitleTextBox.Text = string.Empty;
+            ContentTextBox.Text = string.Empty;
+
+            StatusText.Text = "Notatka została pomyślnie zapisana.";
+        }
+        catch (Exception ex)
+        {
+            StatusText.Text = $"Błąd zapisu: {ex.Message}";
+        }
     }
 }
